@@ -76,7 +76,7 @@ const ContentWrapper = styled.div`
   align-items: center;
   max-width: 600px;
   width: 100%;
-  margin-top: 80px;
+  margin-top: 150px;
   padding-bottom: 20px;
 `;
 
@@ -89,7 +89,7 @@ const Title = styled.h1`
 const Paragraph = styled.p`
   font-size: 1.1em;
   text-align: center;
-  margin: 0 0 20px 0;
+  margin: 0 0 50px 0;
 `;
 
 const FooterButton = styled.a`
