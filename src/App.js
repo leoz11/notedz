@@ -76,7 +76,7 @@ const ContentWrapper = styled.div`
   align-items: center;
   max-width: 600px;
   width: 100%;
-  margin-top: 80px;
+  margin-top: 150px;
   padding-bottom: 20px;
 `;
 
@@ -89,7 +89,7 @@ const Title = styled.h1`
 const Paragraph = styled.p`
   font-size: 1.1em;
   text-align: center;
-  margin: 0 0 20px 0;
+  margin: 0 0 50px 0;
 `;
 
 const FooterButton = styled.a`
@@ -177,14 +177,14 @@ function App() {
     const texts = {
       pt: {
         languageToggle: 'en-us',
-        header: 'anote o que quiser',
+        header: 'escreva o que quiser',
         newNotePrompt: 'nova anotação...',
         backButton: 'voltar',
         paragraph: 'crie histórias, anote receitas de sobremesa, ideias mirabolantes ou qualquer coisa que você quiser.',
       },
       en: {
         languageToggle: 'pt-br',
-        header: 'your notes',
+        header: 'write whatever you want',
         newNotePrompt: 'new note...',
         backButton: 'back',
         paragraph: 'create stories, jot down dessert recipes, wild ideas, or anything else you want.',
