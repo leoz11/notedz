@@ -180,14 +180,14 @@ function App() {
         header: 'escreva o que quiser',
         newNotePrompt: 'nova anotação...',
         backButton: 'voltar',
-        paragraph: 'crie histórias, anote receitas de sobremesa, ideias mirabolantes ou qualquer coisa que você quiser.',
+        paragraph: 'crie histórias, anote receitas, ideias mirabolantes ou qualquer coisa que você quiser.',
       },
       en: {
         languageToggle: 'pt-br',
         header: 'write whatever you want',
         newNotePrompt: 'new note...',
         backButton: 'back',
-        paragraph: 'create stories, jot down dessert recipes, wild ideas, or anything else you want.',
+        paragraph: 'create stories, jot down recipes, wild ideas, or anything else you want.',
       },
     };
     return texts[language][key];
