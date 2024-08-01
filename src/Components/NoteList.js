@@ -34,7 +34,8 @@ const NoteInput = styled.input`
   color: ${(props) => (props.darkMode ? '#fff' : '#000')};
   font-size: 1em;
   padding: 5px;
-  outline: none;
+  outline: 1px solid #333;
+  border-radius: 4px;
 `;
 
 const IconButton = styled.button`
