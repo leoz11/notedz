@@ -40,13 +40,11 @@ const Container = styled.div`
 const ButtonGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  width: 100%;
-  position: fixed;
+  position: absolute;
   top: 10px;
-  left: 0;
-  padding: 0 20px;
+  right: 10px;
 
   @media (max-width: 768px) {
     flex-direction: column;
