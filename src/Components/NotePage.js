@@ -1,7 +1,65 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
+import styled from 'styled-components';
+import { FaArrowLeft, FaEdit, FaCheck } from 'react-icons/fa';
+
+const HeaderWrapper = styled.div`
+  position: sticky;
+  z-index: 1;
+  padding: 20px 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: ${(props) => (props.darkMode ? '#000' : '#fff')};
+`;
+
+
+const BackButton = styled.button`
+  background: none;
+  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  transition: color 0.3s, border-color 0.3s;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9em;
+  margin-right: 10px;
+
+  svg {
+    margin-right: 8px;
+    font-size: 1.3em;
+  }
+`;
+
+const NoteTitle = styled.h2`
+  flex-grow: 1;
+  margin: 0;
+  padding: 5px;
+  font-size: 1.2em;
+`;
+
+const NoteInput = styled.input`
+  flex-grow: 1;
+  background: none;
+  border: none;
+  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  font-size: 1.2em;
+  padding: 5px;
+  outline: none;
+`;
+
+const IconButton = styled.button`
+  background: none;
+  border: none;
+  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  cursor: pointer;
+  font-size: 1em;
+  padding: 5px;
+  margin-left: 5px;
+`;
 
 const NoteContent = styled.textarea`
   width: 100%;
@@ -16,65 +74,72 @@ const NoteContent = styled.textarea`
   resize: none;
   overflow: hidden;
   font-family: 'Roboto', sans-serif;
-  margin-bottom: 80px; /* Ajuste a margem inferior para acomodar os botões fixos */
 `;
 
-const BackButton = styled.button`
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
-  font-size: 1.5em;
-  display: flex;
-  align-items: center;
-
-  svg {
-    margin-right: 8px;
-  }
-`;
-
-function NotePage({ notes, setNotes }) {
+const NotePage = ({ notes, darkMode, updateNote, getLanguageText }) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [note, setNote] = React.useState('');
+  const note = notes[id];
+  const [isEditing, setIsEditing] = useState(false);
+  const textareaRef = useRef(null);
 
-  const darkMode = JSON.parse(localStorage.getItem('darkMode')) || false;
+  useEffect(() => {
+    const handleResize = () => {
+      const textarea = textareaRef.current;
+      if (textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+      }
+    };
 
-  React.useEffect(() => {
-    const noteToEdit = notes.find((note) => note.id === id);
-    if (noteToEdit) {
-      setNote(noteToEdit.content);
-    }
-  }, [id, notes]);
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
-  const handleChange = (e) => {
-    setNote(e.target.value);
-  };
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [note.content]);
 
-  const handleSave = () => {
-    const updatedNotes = notes.map((n) =>
-      n.id === id ? { ...n, content: note } : n
-    );
-    setNotes(updatedNotes);
-    navigate('/');
-  };
+  if (!note) {
+    return <div>Note not found</div>;
+  }
 
   return (
-    <div>
-      <BackButton darkMode={darkMode} onClick={() => navigate('/')}>
-        <FaArrowLeft /> Back
-      </BackButton>
+    <>
+      <HeaderWrapper darkMode={darkMode}>
+        <BackButton darkMode={darkMode} onClick={() => navigate('/')}>
+          <FaArrowLeft /> {getLanguageText('backButton')}
+        </BackButton>
+        {isEditing ? (
+          <>
+            <NoteInput
+              type="text"
+              value={note.title}
+              onChange={(e) => updateNote(id, e.target.value, note.content)}
+              darkMode={darkMode}
+              autoFocus
+            />
+            <IconButton onClick={() => setIsEditing(false)} darkMode={darkMode}>
+              <FaCheck />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <NoteTitle>{note.title}</NoteTitle>
+            <IconButton onClick={() => setIsEditing(true)} darkMode={darkMode}>
+              <FaEdit />
+            </IconButton>
+          </>
+        )}
+      </HeaderWrapper>
       <NoteContent
+        ref={textareaRef}
+        value={note.content}
+        onChange={(e) => updateNote(id, note.title, e.target.value)}
         darkMode={darkMode}
-        value={note}
-        onChange={handleChange}
-        onBlur={handleSave}
       />
-    </div>
+    </>
   );
-}
+};
 
 export default NotePage;
