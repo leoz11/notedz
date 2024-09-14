@@ -33,7 +33,7 @@ const Container = styled.div`
   position: relative;
   padding: 20px;
   box-sizing: border-box;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Adicionado para evitar rolagem horizontal */
 `;
 
 const ButtonGroup = styled.div`
@@ -126,16 +126,9 @@ const LogoWrapper = styled.div`
 `;
 
 const HelpButton = styled(ToggleButton)`
-  position: fixed;
+  position: relative;
   bottom: 10px;
   right: 10px;
-  z-index: 1000;
-
-  @media (max-width: 768px) {
-    position: static;
-    margin-top: 20px;
-    align-self: flex-end;
-  }
 `;
 
 const HelpBox = styled.div`
@@ -151,15 +144,13 @@ const HelpBox = styled.div`
   font-size: 0.9em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  overflow-y: auto;
-  max-height: 80vh;
+  overflow-y: auto; /* Adicionado para permitir rolagem vertical */
   
   @media (max-width: 768px) {
-    position: static;
     width: 90%;
     max-width: 300px;
-    margin: 20px auto;
-    max-height: none;
+    padding: 10px;
+    bottom: 70px;
   }
 `;
 
@@ -216,16 +207,9 @@ const FooterButton = styled.a`
 `;
 
 const MadeByLeoButton = styled(FooterButton)`
-  position: fixed;
+  position: relative;
   bottom: 10px;
   left: 10px;
-  z-index: 1000;
-
-  @media (max-width: 768px) {
-    position: static;
-    margin-top: 20px;
-    align-self: flex-start;
-  }
 `;
 
 function Logo({ darkMode }) {
@@ -386,48 +370,47 @@ function App() {
               }
             />
           </Routes>
-
-          <HelpButton darkMode={isDarkMode} onClick={toggleHelp}>
-            <FaQuestionCircle /> {getLanguageText('help')}
-          </HelpButton>
-
-          {showHelp && (
-            <HelpBox darkMode={isDarkMode}>
-              <HelpContent>
-                <p>{getLanguageText('helpDescription')}</p>
-                <ol>
-                  {getLanguageText('helpInstructions').map((instruction, index) => (
-                    <li key={index}>{instruction}</li>
-                  ))}
-                </ol>
-                <HelpRow>
-                  <ToggleButton darkMode={isDarkMode} disabled>
-                    {isDarkMode ? <FaRegSun /> : <FaRegMoon />} {isDarkMode ? 'light mode' : 'dark mode'}
-                  </ToggleButton>
-                  <span>{getLanguageText('helpTheme')}</span>
-                </HelpRow>
-                <HelpRow>
-                  <ToggleButton darkMode={isDarkMode} disabled>
-                    <FaLanguage /> {getLanguageText('languageToggle')}
-                  </ToggleButton>
-                  <span>{getLanguageText('helpLanguage')}</span>
-                </HelpRow>
-                <p>
-                  {getLanguageText('contactCreator')} <NotedzHighlight>notedz</NotedzHighlight>, {getLanguageText('contactLink')}
-                </p>
-                <HelpRow>
-                  <FooterButton darkMode={isDarkMode} as="button" disabled>
-                    <FaXTwitter /> Leo
-                  </FooterButton>
-                </HelpRow>
-              </HelpContent>
-            </HelpBox>
-          )}
-
-          <MadeByLeoButton darkMode={isDarkMode} href="https://x.com/leozinnjs" target="_blank" rel="noopener noreferrer">
-            <FaXTwitter /> {getLanguageText('madeByLeo')}
-          </MadeByLeoButton>
         </ContentWrapper>
+
+        <HelpButton darkMode={isDarkMode} onClick={toggleHelp}>
+          <FaQuestionCircle /> {getLanguageText('help')}
+        </HelpButton>
+
+        {showHelp && (
+          <HelpBox darkMode={isDarkMode}>
+            <HelpContent>
+              <p>{getLanguageText('helpDescription')}</p>
+              <ol>
+                {getLanguageText('helpInstructions').map((instruction, index) => (
+                  <li key={index}>{instruction}</li>
+                ))}
+              </ol>
+              <HelpRow>
+                <ToggleButton darkMode={isDarkMode} disabled>
+                  {isDarkMode ? <FaRegSun /> : <FaRegMoon />} {isDarkMode ? 'light mode' : 'dark mode'}
+                </ToggleButton>
+                <span>{getLanguageText('helpTheme')}</span>
+              </HelpRow>
+              <HelpRow>
+                <ToggleButton darkMode={isDarkMode} disabled>
+                  <FaLanguage /> {getLanguageText('languageToggle')}
+                </ToggleButton>
+                <span>{getLanguageText('helpLanguage')}</span>
+              </HelpRow>
+              <p>
+                {getLanguageText('contactCreator')} <NotedzHighlight>notedz</NotedzHighlight>, {getLanguageText('contactLink')}
+              </p>
+              <HelpRow>
+                <FooterButton darkMode={isDarkMode} as="button" disabled>
+                  <FaXTwitter /> Leo
+                </FooterButton>
+              </HelpRow>
+            </HelpContent>
+          </HelpBox>
+        )}
+        <MadeByLeoButton darkMode={isDarkMode} href="https://x.com/leozinnjs" target="_blank" rel="noopener noreferrer">
+          <FaXTwitter /> {getLanguageText('madeByLeo')}
+        </MadeByLeoButton>
       </Container>
     </Router>
   );
