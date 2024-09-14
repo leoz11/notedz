@@ -47,7 +47,7 @@ const ButtonGroup = styled.div`
   right: 10px;
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-end;
   }
 `;
