@@ -30,20 +30,22 @@ const Container = styled.div`
   background-color: ${(props) => (props.darkMode ? '#000000' : '#fff')};
   color: ${(props) => (props.darkMode ? '#fff' : '#000')};
   transition: background-color 0.3s, color 0.3s;
-  position: relative;
   padding: 20px;
   box-sizing: border-box;
   overflow-x: hidden; /* Adicionado para evitar rolagem horizontal */
+  padding-bottom: 60px; /* Ajustado para acomodar o footer */
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: space-between; /* Ajustado para alinhar os botões aos extremos */
   align-items: center;
-  position: absolute;
+  width: 100%;
+  position: fixed; /* Agora fixed para o topo */
   top: 10px;
-  right: 10px;
+  left: 0;
+  padding: 0 20px; /* Adiciona espaçamento interno ao grupo de botões */
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -77,11 +79,11 @@ const ContentWrapper = styled.div`
   align-items: center;
   max-width: 600px;
   width: 100%;
-  margin-top: 150px;
+  margin-top: 100px; /* Ajustado para garantir que o conteúdo não fique sobreposto pelos botões do topo */
   padding-bottom: 20px;
 
   @media (max-width: 768px) {
-    margin-top: 100px;
+    margin-top: 70px; /* Ajustado para tela menor */
     padding: 10px;
   }
 `;
@@ -108,13 +110,13 @@ const Paragraph = styled.p`
 `;
 
 const LogoWrapper = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 10px;
   font-family: 'Roboto', sans-serif;
   font-size: 2em;
   color: ${(props) => (props.darkMode ? '#fff' : '#000')};
   cursor: pointer;
+  position: fixed; /* Agora fixed para o topo */
+  top: 10px;
+  left: 10px;
 
   &:hover {
     opacity: 0.8;
@@ -126,7 +128,7 @@ const LogoWrapper = styled.div`
 `;
 
 const HelpButton = styled(ToggleButton)`
-  position: relative;
+  position: absolute; /* Mantido para ajuste de posição */
   bottom: 10px;
   right: 10px;
 `;
@@ -207,7 +209,7 @@ const FooterButton = styled.a`
 `;
 
 const MadeByLeoButton = styled(FooterButton)`
-  position: relative;
+  position: fixed; /* Agora fixed para o canto inferior esquerdo */
   bottom: 10px;
   left: 10px;
 `;
