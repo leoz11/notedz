@@ -123,6 +123,8 @@ const LogoWrapper = styled.div`
 
   @media (max-width: 768px) {
     font-size: 1.5em;
+    top: 15px;
+    left: 15px;
   }
 `;
 
