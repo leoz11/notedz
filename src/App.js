@@ -127,9 +127,8 @@ const LogoWrapper = styled.div`
 
 const HelpButton = styled(ToggleButton)`
   position: fixed;
-  bottom: 80px; /* Ajustado para dar espaço ao campo de texto */
+  bottom: 10px;
   right: 10px;
-  z-index: 1000; /* Certifique-se de que o botão está acima do conteúdo */
 `;
 
 const HelpBox = styled.div`
@@ -211,7 +210,6 @@ const MadeByLeoButton = styled(FooterButton)`
   position: fixed;
   bottom: 10px;
   left: 10px;
-  z-index: 1000; /* Certifique-se de que o botão está acima do conteúdo */
 `;
 
 function Logo({ darkMode }) {
@@ -275,31 +273,51 @@ function App() {
         helpDescription: 'Aqui você pode criar notas, organizar suas ideias, criar histórias e escrever tudo o que quiser!',
         helpInstructions: [
           'Use o campo no centro da tela para dar um título à nota que deseja criar;',
-          'Clique no botão + para adicionar uma nova nota;',
-          'Edite suas notas clicando nelas na lista;',
-          'Use o botão Ajuda para saber mais sobre como usar o aplicativo.'
+          'Clique no botão + para criar a nota;',
+          'A nota será adicionada a uma lista, clique sobre a nota para acessá-la e escrever.',
         ],
-        madeBy: 'Feito por Léo'
+        helpTheme: 'Use esse botão para alterar o tema do site.',
+        helpLanguage: 'Use esse botão para alterar o idioma do site.',
+        contactCreator: 'Qualquer dúvida que tiver pode ser tirada com o criador do',
+        contactLink: 'entre em contato clicando no botão abaixo.',
+        madeByLeo: 'Feito por Léo',
       },
       en: {
         languageToggle: 'pt-br',
         header: 'write whatever you want',
         newNotePrompt: 'give your note a title...',
         backButton: 'back',
-        paragraph: 'create stories, note recipes, brainstorm ideas, or anything else you want!',
+        paragraph: 'create stories, jot down recipes, wild ideas, or anything else you want.',
         help: 'Help',
         helpDescription: 'Here you can create notes, organize your ideas, write stories, and jot down anything you want!',
         helpInstructions: [
           'Use the field in the center of the screen to give a title to the note you want to create;',
-          'Click the + button to add a new note;',
-          'Edit your notes by clicking them in the list;',
-          'Use the Help button to learn more about how to use the app.'
+          'Click the + button to create the note;',
+          'The note will be added to a list, click on the note to access and write in it.',
         ],
-        madeBy: 'Made by Leo'
+        helpTheme: 'Use this button to change the site\'s theme.',
+        helpLanguage: 'Use this button to change the site\'s language.',
+        contactCreator: 'Any questions can be directed to the creator of',
+        contactLink: 'contact him by clicking the button below.',
+        madeByLeo: 'Made by Leo',
       }
     };
-
     return texts[language][key];
+  };
+
+  const addNote = (title) => {
+    setNotes([...notes, { title, content: '' }]);
+  };
+
+  const updateNote = (index, newTitle, newContent) => {
+    const newNotes = [...notes];
+    newNotes[index] = { title: newTitle, content: newContent };
+    setNotes(newNotes);
+  };
+
+  const deleteNote = (index) => {
+    const newNotes = notes.filter((_, i) => i !== index);
+    setNotes(newNotes);
   };
 
   return (
@@ -307,50 +325,91 @@ function App() {
       <GlobalStyle />
       <Container darkMode={isDarkMode}>
         <Logo darkMode={isDarkMode} />
-
         <ButtonGroup>
           <ToggleButton darkMode={isDarkMode} onClick={toggleMode}>
-            {isDarkMode ? <FaRegSun /> : <FaRegMoon />}
-            {getLanguageText('languageToggle')}
+            {isDarkMode ? (
+              <>
+                <FaRegSun /> light mode
+              </>
+            ) : (
+              <>
+                <FaRegMoon /> dark mode
+              </>
+            )}
           </ToggleButton>
           <ToggleButton darkMode={isDarkMode} onClick={toggleLanguage}>
-            <FaLanguage />
-            {getLanguageText('languageToggle')}
+            <FaLanguage /> {getLanguageText('languageToggle')}
           </ToggleButton>
-          <HelpButton darkMode={isDarkMode} onClick={toggleHelp}>
-            <FaQuestionCircle />
-            {getLanguageText('help')}
-          </HelpButton>
         </ButtonGroup>
-
         <ContentWrapper>
           <Title>{getLanguageText('header')}</Title>
           <Paragraph>{getLanguageText('paragraph')}</Paragraph>
-
           <Routes>
-            <Route path="/" element={<NoteList notes={notes} setNotes={setNotes} />} />
-            <Route path="/note/:id" element={<NotePage notes={notes} setNotes={setNotes} />} />
+            <Route
+              path="/"
+              element={
+                <NoteList
+                  notes={notes}
+                  darkMode={isDarkMode}
+                  addNote={addNote}
+                  updateNote={updateNote}
+                  deleteNote={deleteNote}
+                  getLanguageText={getLanguageText}
+                />
+              }
+            />
+            <Route
+              path="/note/:id"
+              element={
+                <NotePage
+                  notes={notes}
+                  darkMode={isDarkMode}
+                  updateNote={updateNote}
+                  getLanguageText={getLanguageText}
+                />
+              }
+            />
           </Routes>
         </ContentWrapper>
 
+        <HelpButton darkMode={isDarkMode} onClick={toggleHelp}>
+          <FaQuestionCircle /> {getLanguageText('help')}
+        </HelpButton>
+
         {showHelp && (
           <HelpBox darkMode={isDarkMode}>
-            <h3>{getLanguageText('help')}</h3>
-            <p>{getLanguageText('helpDescription')}</p>
             <HelpContent>
-              {getLanguageText('helpInstructions').map((instruction, index) => (
-                <HelpRow key={index}>
-                  <FaQuestionCircle />
-                  {instruction}
-                </HelpRow>
-              ))}
+              <p>{getLanguageText('helpDescription')}</p>
+              <ol>
+                {getLanguageText('helpInstructions').map((instruction, index) => (
+                  <li key={index}>{instruction}</li>
+                ))}
+              </ol>
+              <HelpRow>
+                <ToggleButton darkMode={isDarkMode} disabled>
+                  {isDarkMode ? <FaRegSun /> : <FaRegMoon />} {isDarkMode ? 'light mode' : 'dark mode'}
+                </ToggleButton>
+                <span>{getLanguageText('helpTheme')}</span>
+              </HelpRow>
+              <HelpRow>
+                <ToggleButton darkMode={isDarkMode} disabled>
+                  <FaLanguage /> {getLanguageText('languageToggle')}
+                </ToggleButton>
+                <span>{getLanguageText('helpLanguage')}</span>
+              </HelpRow>
+              <p>
+                {getLanguageText('contactCreator')} <NotedzHighlight>notedz</NotedzHighlight>, {getLanguageText('contactLink')}
+              </p>
+              <HelpRow>
+                <FooterButton darkMode={isDarkMode} as="button" disabled>
+                  <FaXTwitter /> Leo
+                </FooterButton>
+              </HelpRow>
             </HelpContent>
           </HelpBox>
         )}
-
-        <MadeByLeoButton darkMode={isDarkMode} href="https://twitter.com/leo" target="_blank">
-          <FaXTwitter />
-          {getLanguageText('madeBy')}
+        <MadeByLeoButton darkMode={isDarkMode} href="https://x.com/leozinnjs" target="_blank" rel="noopener noreferrer">
+          <FaXTwitter /> {getLanguageText('madeByLeo')}
         </MadeByLeoButton>
       </Container>
     </Router>
