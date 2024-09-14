@@ -113,7 +113,7 @@ const LogoWrapper = styled.div`
   font-size: 2em;
   color: ${(props) => (props.darkMode ? '#fff' : '#000')};
   cursor: pointer;
-  position: fixed;
+  position: absolute;
   top: 10px;
   left: 10px;
 
