@@ -30,11 +30,10 @@ const Container = styled.div`
   background-color: ${(props) => (props.darkMode ? '#000000' : '#fff')};
   color: ${(props) => (props.darkMode ? '#fff' : '#000')};
   transition: background-color 0.3s, color 0.3s;
+  position: relative;
   padding: 20px;
   box-sizing: border-box;
-  overflow-x: hidden;
-  padding-bottom: 60px;
-  position: relative; /* Adicionado */
+  overflow-x: hidden; /* Adicionado para evitar rolagem horizontal */
 `;
 
 const ButtonGroup = styled.div`
@@ -47,7 +46,7 @@ const ButtonGroup = styled.div`
   right: 10px;
 
   @media (max-width: 768px) {
-    flex-direction: row;
+    flex-direction: column;
     align-items: flex-end;
   }
 `;
@@ -78,11 +77,11 @@ const ContentWrapper = styled.div`
   align-items: center;
   max-width: 600px;
   width: 100%;
-  margin-top: 100px;
+  margin-top: 150px;
   padding-bottom: 20px;
 
   @media (max-width: 768px) {
-    margin-top: 70px;
+    margin-top: 100px;
     padding: 10px;
   }
 `;
@@ -109,13 +108,13 @@ const Paragraph = styled.p`
 `;
 
 const LogoWrapper = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
   font-family: 'Roboto', sans-serif;
   font-size: 2em;
   color: ${(props) => (props.darkMode ? '#fff' : '#000')};
   cursor: pointer;
-  position: absolute;
-  top: 10px;
-  left: 10px;
 
   &:hover {
     opacity: 0.8;
@@ -123,19 +122,17 @@ const LogoWrapper = styled.div`
 
   @media (max-width: 768px) {
     font-size: 1.5em;
-    top: 20px;
-    left: 20px;
   }
 `;
 
 const HelpButton = styled(ToggleButton)`
-  position: absolute;
+  position: fixed;
   bottom: 10px;
   right: 10px;
 `;
 
 const HelpBox = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 60px;
   right: 10px;
   width: 300px;
@@ -147,8 +144,8 @@ const HelpBox = styled.div`
   font-size: 0.9em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  overflow-y: auto;
-
+  overflow-y: auto; /* Adicionado para permitir rolagem vertical */
+  
   @media (max-width: 768px) {
     width: 90%;
     max-width: 300px;
@@ -210,7 +207,7 @@ const FooterButton = styled.a`
 `;
 
 const MadeByLeoButton = styled(FooterButton)`
-  position: absolute;
+  position: fixed;
   bottom: 10px;
   left: 10px;
 `;
@@ -281,43 +278,46 @@ function App() {
         ],
         helpTheme: 'Use esse botão para alterar o tema do site.',
         helpLanguage: 'Use esse botão para alterar o idioma do site.',
-        contactCreator: 'Caso tenha algum problema ou sugestão, entre em contato com',
-        contactLink: 'notedz no Twitter.',
-        madeByLeo: 'feito por Leo',
+        contactCreator: 'Qualquer dúvida que tiver pode ser tirada com o criador do',
+        contactLink: 'entre em contato clicando no botão abaixo.',
+        madeByLeo: 'Feito por Léo',
       },
       en: {
         languageToggle: 'pt-br',
         header: 'write whatever you want',
-        newNotePrompt: 'give a title to your note...',
+        newNotePrompt: 'give your note a title...',
         backButton: 'back',
-        paragraph: 'create stories, jot down recipes, brainstorm ideas, or anything else you want.',
+        paragraph: 'create stories, jot down recipes, wild ideas, or anything else you want.',
         help: 'Help',
-        helpDescription: 'Here you can create notes, organize your ideas, write stories, and jot down whatever you want!',
+        helpDescription: 'Here you can create notes, organize your ideas, write stories, and jot down anything you want!',
         helpInstructions: [
           'Use the field in the center of the screen to give a title to the note you want to create;',
           'Click the + button to create the note;',
-          'The note will be added to a list, click on the note to access it and write.',
+          'The note will be added to a list, click on the note to access and write in it.',
         ],
-        helpTheme: 'Use this button to change the site’s theme.',
-        helpLanguage: 'Use this button to change the site’s language.',
-        contactCreator: 'If you have any issues or suggestions, contact',
-        contactLink: 'notedz on Twitter.',
-        madeByLeo: 'made by Leo',
-      },
+        helpTheme: 'Use this button to change the site\'s theme.',
+        helpLanguage: 'Use this button to change the site\'s language.',
+        contactCreator: 'Any questions can be directed to the creator of',
+        contactLink: 'contact him by clicking the button below.',
+        madeByLeo: 'Made by Leo',
+      }
     };
     return texts[language][key];
   };
 
-  const addNote = (note) => {
-    setNotes([...notes, note]);
+  const addNote = (title) => {
+    setNotes([...notes, { title, content: '' }]);
   };
 
-  const updateNote = (updatedNote) => {
-    setNotes(notes.map((note) => (note.id === updatedNote.id ? updatedNote : note)));
+  const updateNote = (index, newTitle, newContent) => {
+    const newNotes = [...notes];
+    newNotes[index] = { title: newTitle, content: newContent };
+    setNotes(newNotes);
   };
 
-  const deleteNote = (id) => {
-    setNotes(notes.filter((note) => note.id !== id));
+  const deleteNote = (index) => {
+    const newNotes = notes.filter((_, i) => i !== index);
+    setNotes(newNotes);
   };
 
   return (
@@ -417,3 +417,4 @@ function App() {
 }
 
 export default App;
+
