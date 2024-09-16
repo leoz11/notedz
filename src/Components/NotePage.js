@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaArrowLeft, FaEdit, FaCheck, FaUndo, FaRedo } from 'react-icons/fa';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import './Quill.css'
 
 const HeaderWrapper = styled.div`
   position: sticky;
