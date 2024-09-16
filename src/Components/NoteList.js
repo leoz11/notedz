@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaPlus, FaTimes, FaEdit, FaCheck } from 'react-icons/fa';
+import ConfirmationModal from './ConfirmationModal'; // Ajuste o caminho conforme necessário
 
 const NotesList = styled.ul`
   list-style-type: none;
@@ -62,12 +63,32 @@ const NewNoteWrapper = styled.div`
 const NoteList = ({ notes, darkMode, addNote, updateNote, deleteNote, getLanguageText }) => {
   const [newNoteTitle, setNewNoteTitle] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState(null);
 
   const handleAddNote = () => {
     if (newNoteTitle.trim()) {
       addNote(newNoteTitle);
       setNewNoteTitle('');
     }
+  };
+
+  const handleDeleteNote = (index) => {
+    setNoteToDelete(index);
+    setIsModalOpen(true);
+  };
+
+  const confirmDeleteNote = () => {
+    if (noteToDelete !== null) {
+      deleteNote(noteToDelete);
+    }
+    setIsModalOpen(false);
+    setNoteToDelete(null);
+  };
+
+  const cancelDeleteNote = () => {
+    setIsModalOpen(false);
+    setNoteToDelete(null);
   };
 
   return (
@@ -108,7 +129,7 @@ const NoteList = ({ notes, darkMode, addNote, updateNote, deleteNote, getLanguag
                 <IconButton onClick={() => setEditingIndex(index)} darkMode={darkMode}>
                   <FaEdit />
                 </IconButton>
-                <IconButton onClick={() => deleteNote(index)} darkMode={darkMode}>
+                <IconButton onClick={() => handleDeleteNote(index)} darkMode={darkMode}>
                   <FaTimes />
                 </IconButton>
               </>
@@ -116,6 +137,12 @@ const NoteList = ({ notes, darkMode, addNote, updateNote, deleteNote, getLanguag
           </NoteItem>
         ))}
       </NotesList>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        darkMode={darkMode}
+        onConfirm={confirmDeleteNote}
+        onCancel={cancelDeleteNote}
+      />
     </>
   );
 };
