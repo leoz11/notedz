@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaArrowLeft, FaEdit, FaCheck } from 'react-icons/fa';
+import { FaArrowLeft, FaEdit, FaCheck, FaUndo, FaRedo } from 'react-icons/fa';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const HeaderWrapper = styled.div`
   position: sticky;
@@ -76,6 +78,73 @@ const NoteContent = styled.textarea`
   font-family: 'Roboto', sans-serif;
 `;
 
+const EditorWrapper = styled.div`
+  width: 100%; // Use 100% da largura disponível
+  max-width: 600px; // Limite máximo de largura
+  height: auto; // Altura automática
+  min-height: 400px; // Altura mínima
+  margin: 20px auto; // Centralizar e adicionar margem
+  border: 1px solid ${(props) => (props.darkMode ? '#444' : '#ccc')};
+  border-radius: 4px;
+  overflow: hidden; // Garantir que nenhum conteúdo transborde
+  
+  @media (max-width: 768px) {
+    width: 95%; // Usar 95% da largura em telas menores
+    margin: 10px auto; // Reduzir margens em telas menores
+  }
+`;
+
+const StyledReactQuill = styled(ReactQuill)`
+  height: 100%; // Ocupar toda a altura do wrapper
+
+  .ql-container {
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    height: calc(100% - 42px); // Subtrair altura da barra de ferramentas
+  }
+
+  .ql-editor {
+    min-height: 350px; // Altura mínima para o editor
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .ql-toolbar {
+    border-bottom: 1px solid ${(props) => (props.darkMode ? '#444' : '#ccc')};
+    background-color: ${(props) => (props.darkMode ? '#2a2a2a' : '#f8f8f8')};
+  }
+
+  ${(props) =>
+    props.darkMode &&
+    `
+    .ql-toolbar {
+      background-color: #2a2a2a;
+      border-color: #444;
+    }
+    .ql-toolbar .ql-stroke {
+      stroke: #ccc;
+    }
+    .ql-toolbar .ql-fill {
+      fill: #ccc;
+    }
+    .ql-container {
+      background-color: #1a1a1a;
+      color: #fff;
+      border-color: #444;
+    }
+  `}
+
+  @media (max-width: 768px) {
+    .ql-container {
+      font-size: 14px; // Reduzir tamanho da fonte em telas menores
+    }
+    
+    .ql-editor {
+      padding: 10px; // Reduzir padding em telas menores
+    }
+  }
+`;
+
 const NotePage = ({ notes, darkMode, updateNote, getLanguageText }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -131,15 +200,23 @@ const NotePage = ({ notes, darkMode, updateNote, getLanguageText }) => {
             </IconButton>
           </>
         )}
+        <IconButton onClick={handleUndo} darkMode={darkMode}>
+          <FaUndo />
+        </IconButton>
+        <IconButton onClick={handleRedo} darkMode={darkMode}>
+          <FaRedo />
+        </IconButton>
       </HeaderWrapper>
-      <NoteContent
-        ref={textareaRef}
-        value={note.content}
-        onChange={(e) => updateNote(id, note.title, e.target.value)}
-        darkMode={darkMode}
-      />
+      <EditorWrapper darkMode={darkMode}>
+        <StyledReactQuill
+          theme="snow"
+          value={editorState}
+          onChange={handleContentChange}
+          darkMode={darkMode}
+        />
+      </EditorWrapper>
     </>
   );
-};
+};  
 
 export default NotePage;
