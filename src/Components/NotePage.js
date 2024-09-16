@@ -7,14 +7,13 @@ import 'react-quill/dist/quill.snow.css';
 
 const HeaderWrapper = styled.div`
   position: sticky;
+  top: 0;
   z-index: 1;
   padding: 20px 0;
   width: 100%;
   display: flex;
   align-items: center;
-  background: ${(props) => (props.darkMode ? '#000' : '#fff')};
 `;
-
 
 const BackButton = styled.button`
   background: none;
@@ -63,20 +62,6 @@ const IconButton = styled.button`
   margin-left: 5px;
 `;
 
-const NoteContent = styled.textarea`
-  width: 100%;
-  margin-top: 20px;
-  padding: 10px;
-  font-size: 1em;
-  background-color: ${(props) => (props.darkMode ? '#1a1a1a' : '#f5f5f5')};
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
-  border: 1px solid ${(props) => (props.darkMode ? '#333' : '#ddd')};
-  border-radius: 5px;
-  box-sizing: border-box;
-  resize: none;
-  overflow: hidden;
-  font-family: 'Roboto', sans-serif;
-`;
 
 const EditorWrapper = styled.div`
   width: 100%; // Use 100% da largura disponível
