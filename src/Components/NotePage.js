@@ -150,24 +150,38 @@ const NotePage = ({ notes, darkMode, updateNote, getLanguageText }) => {
   const navigate = useNavigate();
   const note = notes[id];
   const [isEditing, setIsEditing] = useState(false);
-  const textareaRef = useRef(null);
+  const [editorState, setEditorState] = useState(note.content);
+  const [undoStack, setUndoStack] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
 
   useEffect(() => {
-    const handleResize = () => {
-      const textarea = textareaRef.current;
-      if (textarea) {
-        textarea.style.height = 'auto';
-        textarea.style.height = `${textarea.scrollHeight}px`;
-      }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    setEditorState(note.content);
   }, [note.content]);
+
+  const handleContentChange = (content) => {
+    setUndoStack([...undoStack, editorState]);
+    setEditorState(content);
+    setRedoStack([]);
+    updateNote(id, note.title, content);
+  };
+
+  const handleUndo = () => {
+    if (undoStack.length > 0) {
+      const prevState = undoStack.pop();
+      setRedoStack([editorState, ...redoStack]);
+      setEditorState(prevState);
+      updateNote(id, note.title, prevState);
+    }
+  };
+
+  const handleRedo = () => {
+    if (redoStack.length > 0) {
+      const nextState = redoStack.shift();
+      setUndoStack([...undoStack, editorState]);
+      setEditorState(nextState);
+      updateNote(id, note.title, nextState);
+    }
+  };
 
   if (!note) {
     return <div>Note not found</div>;
