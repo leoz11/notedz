@@ -281,43 +281,46 @@ function App() {
         ],
         helpTheme: 'Use esse botão para alterar o tema do site.',
         helpLanguage: 'Use esse botão para alterar o idioma do site.',
-        contactCreator: 'Caso tenha algum problema ou sugestão, entre em contato com',
-        contactLink: 'notedz no Twitter.',
-        madeByLeo: 'feito por Leo',
+        contactCreator: 'Qualquer dúvida que tiver pode ser tirada com o criador do',
+        contactLink: 'entre em contato clicando no botão abaixo.',
+        madeByLeo: 'Feito por Léo',
       },
       en: {
         languageToggle: 'pt-br',
         header: 'write whatever you want',
-        newNotePrompt: 'give a title to your note...',
+        newNotePrompt: 'give your note a title...',
         backButton: 'back',
-        paragraph: 'create stories, jot down recipes, brainstorm ideas, or anything else you want.',
+        paragraph: 'create stories, jot down recipes, wild ideas, or anything else you want.',
         help: 'Help',
-        helpDescription: 'Here you can create notes, organize your ideas, write stories, and jot down whatever you want!',
+        helpDescription: 'Here you can create notes, organize your ideas, write stories, and jot down anything you want!',
         helpInstructions: [
           'Use the field in the center of the screen to give a title to the note you want to create;',
           'Click the + button to create the note;',
-          'The note will be added to a list, click on the note to access it and write.',
+          'The note will be added to a list, click on the note to access and write in it.',
         ],
-        helpTheme: 'Use this button to change the site’s theme.',
-        helpLanguage: 'Use this button to change the site’s language.',
-        contactCreator: 'If you have any issues or suggestions, contact',
-        contactLink: 'notedz on Twitter.',
-        madeByLeo: 'made by Leo',
-      },
+        helpTheme: 'Use this button to change the site\'s theme.',
+        helpLanguage: 'Use this button to change the site\'s language.',
+        contactCreator: 'Any questions can be directed to the creator of',
+        contactLink: 'contact him by clicking the button below.',
+        madeByLeo: 'Made by Leo',
+      }
     };
     return texts[language][key];
   };
 
-  const addNote = (note) => {
-    setNotes([...notes, note]);
+  const addNote = (title) => {
+    setNotes([...notes, { title, content: '' }]);
   };
 
-  const updateNote = (updatedNote) => {
-    setNotes(notes.map((note) => (note.id === updatedNote.id ? updatedNote : note)));
+  const updateNote = (index, newTitle, newContent) => {
+    const newNotes = [...notes];
+    newNotes[index] = { title: newTitle, content: newContent };
+    setNotes(newNotes);
   };
 
-  const deleteNote = (id) => {
-    setNotes(notes.filter((note) => note.id !== id));
+  const deleteNote = (index) => {
+    const newNotes = notes.filter((_, i) => i !== index);
+    setNotes(newNotes);
   };
 
   return (
