@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FaRegMoon, FaRegSun, FaLanguage, FaQuestionCircle } from 'react-icons/fa';
-import { FaXTwitter } from "react-icons/fa6";
+import { BsCloudFill } from "react-icons/bs";
 import NoteList from './Components/NoteList';
 import NotePage from './Components/NotePage';
 
@@ -34,7 +34,7 @@ const Container = styled.div`
   box-sizing: border-box;
   overflow-x: hidden;
   padding-bottom: 60px;
-  position: relative; /* Adicionado */
+  position: relative;
 `;
 
 const ButtonGroup = styled.div`
@@ -209,7 +209,7 @@ const FooterButton = styled.a`
   }
 `;
 
-const MadeByLeoButton = styled(FooterButton)`
+const FollowUsButton = styled(FooterButton)`
   position: absolute;
   bottom: 10px;
   left: 10px;
@@ -283,7 +283,7 @@ function App() {
         helpLanguage: 'Use esse botão para alterar o idioma do site.',
         contactCreator: 'Qualquer dúvida que tiver pode ser tirada com o criador do',
         contactLink: 'entre em contato clicando no botão abaixo.',
-        madeByLeo: 'Feito por Léo',
+        followUs: 'Nos siga',
       },
       en: {
         languageToggle: 'pt-br',
@@ -302,7 +302,7 @@ function App() {
         helpLanguage: 'Use this button to change the site\'s language.',
         contactCreator: 'Any questions can be directed to the creator of',
         contactLink: 'contact him by clicking the button below.',
-        madeByLeo: 'Made by Leo',
+        followUs: 'Follow us',
       }
     };
     return texts[language][key];
@@ -405,15 +405,20 @@ function App() {
               </p>
               <HelpRow>
                 <FooterButton darkMode={isDarkMode} as="button" disabled>
-                  <FaXTwitter /> Leo
+                  <BsCloudFill /> notedz
                 </FooterButton>
               </HelpRow>
             </HelpContent>
           </HelpBox>
         )}
-        <MadeByLeoButton darkMode={isDarkMode} href="https://x.com/leozinnjs" target="_blank" rel="noopener noreferrer">
-          <FaXTwitter /> {getLanguageText('madeByLeo')}
-        </MadeByLeoButton>
+        <FollowUsButton 
+          darkMode={isDarkMode} 
+          href="https://bsky.app/profile/notedz.bsky.social" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          <BsCloudFill /> {getLanguageText('followUs')}
+        </FollowUsButton>
       </Container>
     </Router>
   );
