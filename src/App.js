@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FaRegMoon, FaRegSun, FaLanguage, FaQuestionCircle } from 'react-icons/fa';
-import { BsCloudFill } from "react-icons/bs";
+import NoteList from './Components/NoteList';
 import NotePage from './Components/NotePage';
 
 const GlobalStyle = createGlobalStyle`
@@ -214,80 +214,6 @@ const FollowUsButton = styled(FooterButton)`
   left: 10px;
 `;
 
-// NoteList component (updated with 50 character limit)
-const NoteInput = styled.input`
-  width: 70%;
-  padding: 10px;
-  margin-right: 10px;
-  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
-  background-color: ${(props) => (props.darkMode ? '#333' : '#f0f0f0')};
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
-  border-radius: 5px;
-  font-family: 'Fira Code', monospace;
-`;
-
-const AddButton = styled.button`
-  padding: 10px 20px;
-  background-color: ${(props) => (props.darkMode ? '#fff' : '#000')};
-  color: ${(props) => (props.darkMode ? '#000' : '#fff')};
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'Fira Code', monospace;
-`;
-
-const NoteItem = styled.div`
-  margin: 10px 0;
-  padding: 10px;
-  background-color: ${(props) => (props.darkMode ? '#333' : '#f0f0f0')};
-  border-radius: 5px;
-
-  a {
-    color: ${(props) => (props.darkMode ? '#fff' : '#000')};
-    text-decoration: none;
-    
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
-
-function NoteList({ notes, darkMode, addNote, updateNote, deleteNote, getLanguageText }) {
-  const [newNoteTitle, setNewNoteTitle] = useState('');
-
-  const handleAddNote = () => {
-    if (newNoteTitle.trim()) {
-      addNote(newNoteTitle.trim());
-      setNewNoteTitle('');
-    }
-  };
-
-  const handleInputChange = (e) => {
-    // Limit the input to 50 characters
-    setNewNoteTitle(e.target.value.slice(0, 50));
-  };
-
-  return (
-    <div>
-      <NoteInput
-        type="text"
-        value={newNoteTitle}
-        onChange={handleInputChange}
-        placeholder={getLanguageText('newNotePrompt')}
-        darkMode={darkMode}
-      />
-      <AddButton onClick={handleAddNote} darkMode={darkMode}>
-        +
-      </AddButton>
-      {notes.map((note, index) => (
-        <NoteItem key={index} darkMode={darkMode}>
-          <Link to={`/note/${index}`}>{note.title}</Link>
-        </NoteItem>
-      ))}
-    </div>
-  );
-}
-
 function Logo({ darkMode }) {
   return (
     <LogoWrapper darkMode={darkMode}>
@@ -342,58 +268,65 @@ function App() {
       pt: {
         languageToggle: 'en-us',
         header: 'escreva o que quiser',
-        newNotePrompt: 'dê um título à sua nota (max 50 caracteres)...',
+        newNotePrompt: 'dê um título à sua nota...',
         backButton: 'voltar',
         paragraph: 'crie histórias, anote receitas, ideias mirabolantes ou qualquer coisa que você quiser.',
         help: 'Ajuda',
         helpDescription: 'Aqui você pode criar notas, organizar suas ideias, criar histórias e escrever tudo o que quiser!',
         helpInstructions: [
-          'Use o campo no centro da tela para dar um título à nota que deseja criar (máximo de 50 caracteres);',
+          'Use o campo no centro da tela para dar um título à nota que deseja criar;',
           'Clique no botão + para criar a nota;',
           'A nota será adicionada a uma lista, clique sobre a nota para acessá-la e escrever.',
         ],
         helpTheme: 'Use esse botão para alterar o tema do site.',
         helpLanguage: 'Use esse botão para alterar o idioma do site.',
-        contactCreator: 'Qualquer dúvida que tiver pode ser tirada com o criador do',
-        contactLink: 'entre em contato clicando no botão abaixo.',
-        followUs: 'Nos siga',
       },
       en: {
         languageToggle: 'pt-br',
-        header: 'write whatever you want',
-        newNotePrompt: 'give your note a title (max 50 characters)...',
+        header: 'write what you want',
+        newNotePrompt: 'give a title to your note...',
         backButton: 'back',
-        paragraph: 'create stories, jot down recipes, wild ideas, or anything else you want.',
+        paragraph: 'create stories, note dessert recipes, crazy ideas, or anything you want.',
         help: 'Help',
-        helpDescription: 'Here you can create notes, organize your ideas, write stories, and jot down anything you want!',
+        helpDescription: 'Here you can create notes, organize your ideas, write stories, and write everything you want!',
         helpInstructions: [
-          'Use the field in the center of the screen to give a title to the note you want to create (maximum 50 characters);',
+          'Use the field in the center of the screen to give a title to the note you want to create;',
           'Click the + button to create the note;',
-          'The note will be added to a list, click on the note to access and write in it.',
+          'The note will be added to a list; click on the note to access it and write.',
         ],
-        helpTheme: 'Use this button to change the site\'s theme.',
-        helpLanguage: 'Use this button to change the site\'s language.',
-        contactCreator: 'Any questions can be directed to the creator of',
-        contactLink: 'contact him by clicking the button below.',
-        followUs: 'Follow us',
-      }
+        helpTheme: 'Use this button to change the site theme.',
+        helpLanguage: 'Use this button to change the site language.',
+      },
     };
+
     return texts[language][key];
   };
 
   const addNote = (title) => {
-    setNotes([...notes, { title, content: '' }]);
+    if (title.length > 50) {
+      alert('O título da nota deve ter no máximo 50 caracteres.');
+      return;
+    }
+    const newNote = {
+      id: Date.now(),
+      title,
+      content: '',
+    };
+    setNotes([...notes, newNote]);
   };
 
-  const updateNote = (index, newTitle, newContent) => {
-    const newNotes = [...notes];
-    newNotes[index] = { title: newTitle, content: newContent };
-    setNotes(newNotes);
-  };
-
-  const deleteNote = (index) => {
-    const newNotes = notes.filter((_, i) => i !== index);
-    setNotes(newNotes);
+  const updateNote = (id, updatedContent) => {
+    const updatedNotes = notes.map((note) => {
+      if (note.id === id) {
+        if (note.title.length > 50) {
+          alert('O título da nota deve ter no máximo 50 caracteres.');
+          return note; // Retorna a nota original se o título exceder o limite
+        }
+        return { ...note, content: updatedContent };
+      }
+      return note;
+    });
+    setNotes(updatedNotes);
   };
 
   return (
@@ -402,95 +335,48 @@ function App() {
       <Container darkMode={isDarkMode}>
         <Logo darkMode={isDarkMode} />
         <ButtonGroup>
-          <ToggleButton darkMode={isDarkMode} onClick={toggleMode}>
-            {isDarkMode ? (
-              <>
-                <FaRegSun /> light mode
-              </>
-            ) : (
-              <>
-                <FaRegMoon /> dark mode
-              </>
-            )}
+          <ToggleButton onClick={toggleMode} darkMode={isDarkMode}>
+            {isDarkMode ? <FaRegSun /> : <FaRegMoon />}
+            {getLanguageText('languageToggle')}
           </ToggleButton>
-          <ToggleButton darkMode={isDarkMode} onClick={toggleLanguage}>
-            <FaLanguage /> {getLanguageText('languageToggle')}
+          <ToggleButton onClick={toggleLanguage} darkMode={isDarkMode}>
+            <FaLanguage />
+            {getLanguageText('languageToggle')}
           </ToggleButton>
+          <HelpButton onClick={toggleHelp} darkMode={isDarkMode}>
+            <FaQuestionCircle />
+            {getLanguageText('help')}
+          </HelpButton>
         </ButtonGroup>
         <ContentWrapper>
           <Title>{getLanguageText('header')}</Title>
           <Paragraph>{getLanguageText('paragraph')}</Paragraph>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <NoteList
-                  notes={notes}
-                  darkMode={isDarkMode}
-                  addNote={addNote}
-                  updateNote={updateNote}
-                  deleteNote={deleteNote}
-                  getLanguageText={getLanguageText}
-                />
-              }
-            />
-            <Route
-              path="/note/:id"
-              element={
-                <NotePage
-                  notes={notes}
-                  darkMode={isDarkMode}
-                  updateNote={updateNote}
-                  getLanguageText={getLanguageText}
-                />
-              }
-            />
-          </Routes>
+          <NoteList notes={notes} addNote={addNote} language={language} />
         </ContentWrapper>
-
-        <HelpButton darkMode={isDarkMode} onClick={toggleHelp}>
-          <FaQuestionCircle /> {getLanguageText('help')}
-        </HelpButton>
-
         {showHelp && (
           <HelpBox darkMode={isDarkMode}>
             <HelpContent>
+              <h4>{getLanguageText('help')}</h4>
               <p>{getLanguageText('helpDescription')}</p>
-              <ol>
-                {getLanguageText('helpInstructions').map((instruction, index) => (
-                  <li key={index}>{instruction}</li>
-                ))}
-              </ol>
-              <HelpRow>
-                <ToggleButton darkMode={isDarkMode} disabled>
-                  {isDarkMode ? <FaRegSun /> : <FaRegMoon />} {isDarkMode ? 'light mode' : 'dark mode'}
-                </ToggleButton>
-                <span>{getLanguageText('helpTheme')}</span>
-              </HelpRow>
-              <HelpRow>
-                <ToggleButton darkMode={isDarkMode} disabled>
-                  <FaLanguage /> {getLanguageText('languageToggle')}
-                </ToggleButton>
-                <span>{getLanguageText('helpLanguage')}</span>
-              </HelpRow>
-              <p>
-                {getLanguageText('contactCreator')} <NotedzHighlight>notedz</NotedzHighlight>, {getLanguageText('contactLink')}
-              </p>
-              <HelpRow>
-                <FooterButton darkMode={isDarkMode} as="button" disabled>
-                  <BsCloudFill /> notedz
-                </FooterButton>
-              </HelpRow>
+              {getLanguageText('helpInstructions').map((instruction, index) => (
+                <HelpRow key={index}>
+                  <span>{index + 1}.</span>
+                  <span>{instruction}</span>
+                </HelpRow>
+              ))}
+              <p>{getLanguageText('helpTheme')}</p>
+              <p>{getLanguageText('helpLanguage')}</p>
             </HelpContent>
           </HelpBox>
         )}
-        <FollowUsButton 
-          darkMode={isDarkMode} 
-          href="https://bsky.app/profile/notedz.bsky.social" 
-          target="_blank" 
+        <FollowUsButton
+          href="https://twitter.com/leozinnjs"
+          target="_blank"
           rel="noopener noreferrer"
+          darkMode={isDarkMode}
         >
-          <BsCloudFill /> {getLanguageText('followUs')}
+          <FaLanguage />
+          {getLanguageText('backButton')}
         </FollowUsButton>
       </Container>
     </Router>
