@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FaRegMoon, FaRegSun, FaLanguage, FaQuestionCircle } from 'react-icons/fa';
-import { FaXTwitter } from "react-icons/fa6";
+import { FaBluesky } from "react-icons/fa6";
 import NoteList from './Components/NoteList';
 import NotePage from './Components/NotePage';
 
@@ -34,7 +34,7 @@ const Container = styled.div`
   box-sizing: border-box;
   overflow-x: hidden;
   padding-bottom: 60px;
-  position: relative; /* Adicionado */
+  position: relative;
 `;
 
 const ButtonGroup = styled.div`
@@ -176,7 +176,8 @@ const HelpRow = styled.div`
 
 const NotedzHighlight = styled.span`
   text-decoration: underline;
-  text-decoration-color: #40E0D0;
+  text-decoration-thickness: 2.5px;
+  text-decoration-color: #7F00FF;
   color: inherit;
 `;
 
@@ -309,13 +310,21 @@ function App() {
   };
 
   const addNote = (title) => {
-    setNotes([...notes, { title, content: '' }]);
+    if (title.length <= 50) {
+      setNotes([...notes, { title, content: '' }]);
+    } else {
+      alert("O título da nota não pode ter mais de 50 caracteres.");
+    }
   };
 
   const updateNote = (index, newTitle, newContent) => {
-    const newNotes = [...notes];
-    newNotes[index] = { title: newTitle, content: newContent };
-    setNotes(newNotes);
+    if (newTitle.length <= 50) {
+      const newNotes = [...notes];
+      newNotes[index] = { title: newTitle, content: newContent };
+      setNotes(newNotes);
+    } else {
+      alert("O título da nota não pode ter mais de 50 caracteres.");
+    }
   };
 
   const deleteNote = (index) => {
@@ -404,15 +413,15 @@ function App() {
                 {getLanguageText('contactCreator')} <NotedzHighlight>notedz</NotedzHighlight>, {getLanguageText('contactLink')}
               </p>
               <HelpRow>
-                <FooterButton darkMode={isDarkMode} as="button" disabled>
-                  <FaXTwitter /> Leo
+                <FooterButton darkMode={isDarkMode} href="https://bsky.app/profile/leozvlr.bsky.social" target="_blank" rel="noopener noreferrer">
+                  <FaBluesky  /> Leo
                 </FooterButton>
               </HelpRow>
             </HelpContent>
           </HelpBox>
         )}
-        <MadeByLeoButton darkMode={isDarkMode} href="https://x.com/leozinnjs" target="_blank" rel="noopener noreferrer">
-          <FaXTwitter /> {getLanguageText('madeByLeo')}
+        <MadeByLeoButton darkMode={isDarkMode} href="https://bsky.app/profile/leozvlr.bsky.social" target="_blank" rel="noopener noreferrer">
+          <FaBluesky  /> {getLanguageText('madeByLeo')}
         </MadeByLeoButton>
       </Container>
     </Router>
