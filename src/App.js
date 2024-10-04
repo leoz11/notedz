@@ -313,8 +313,11 @@ function App() {
   };
 
   const updateNote = (index, newTitle, newContent) => {
+    const title = newTitle.slice(0, 50);
+    const content = newContent.slice(0, 50);
+  
     const newNotes = [...notes];
-    newNotes[index] = { title: newTitle, content: newContent };
+    newNotes[index] = { title, content };
     setNotes(newNotes);
   };
 
