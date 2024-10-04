@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FaRegMoon, FaRegSun, FaLanguage, FaQuestionCircle } from 'react-icons/fa';
+import { BsCloudFill } from "react-icons/bs";
 import NoteList from './Components/NoteList';
 import NotePage from './Components/NotePage';
 
@@ -280,53 +281,46 @@ function App() {
         ],
         helpTheme: 'Use esse botão para alterar o tema do site.',
         helpLanguage: 'Use esse botão para alterar o idioma do site.',
+        contactCreator: 'Qualquer dúvida que tiver pode ser tirada com o criador do',
+        contactLink: 'entre em contato clicando no botão abaixo.',
+        followUs: 'Nos siga',
       },
       en: {
         languageToggle: 'pt-br',
-        header: 'write what you want',
-        newNotePrompt: 'give a title to your note...',
+        header: 'write whatever you want',
+        newNotePrompt: 'give your note a title...',
         backButton: 'back',
-        paragraph: 'create stories, note dessert recipes, crazy ideas, or anything you want.',
+        paragraph: 'create stories, jot down recipes, wild ideas, or anything else you want.',
         help: 'Help',
-        helpDescription: 'Here you can create notes, organize your ideas, write stories, and write everything you want!',
+        helpDescription: 'Here you can create notes, organize your ideas, write stories, and jot down anything you want!',
         helpInstructions: [
           'Use the field in the center of the screen to give a title to the note you want to create;',
           'Click the + button to create the note;',
-          'The note will be added to a list; click on the note to access it and write.',
+          'The note will be added to a list, click on the note to access and write in it.',
         ],
-        helpTheme: 'Use this button to change the site theme.',
-        helpLanguage: 'Use this button to change the site language.',
-      },
+        helpTheme: 'Use this button to change the site\'s theme.',
+        helpLanguage: 'Use this button to change the site\'s language.',
+        contactCreator: 'Any questions can be directed to the creator of',
+        contactLink: 'contact him by clicking the button below.',
+        followUs: 'Follow us',
+      }
     };
-
     return texts[language][key];
   };
 
   const addNote = (title) => {
-    if (title.length > 50) {
-      alert('O título da nota deve ter no máximo 50 caracteres.');
-      return;
-    }
-    const newNote = {
-      id: Date.now(),
-      title,
-      content: '',
-    };
-    setNotes([...notes, newNote]);
+    setNotes([...notes, { title, content: '' }]);
   };
 
-  const updateNote = (id, updatedContent) => {
-    const updatedNotes = notes.map((note) => {
-      if (note.id === id) {
-        if (note.title.length > 50) {
-          alert('O título da nota deve ter no máximo 50 caracteres.');
-          return note; // Retorna a nota original se o título exceder o limite
-        }
-        return { ...note, content: updatedContent };
-      }
-      return note;
-    });
-    setNotes(updatedNotes);
+  const updateNote = (index, newTitle, newContent) => {
+    const newNotes = [...notes];
+    newNotes[index] = { title: newTitle, content: newContent };
+    setNotes(newNotes);
+  };
+
+  const deleteNote = (index) => {
+    const newNotes = notes.filter((_, i) => i !== index);
+    setNotes(newNotes);
   };
 
   return (
@@ -335,48 +329,95 @@ function App() {
       <Container darkMode={isDarkMode}>
         <Logo darkMode={isDarkMode} />
         <ButtonGroup>
-          <ToggleButton onClick={toggleMode} darkMode={isDarkMode}>
-            {isDarkMode ? <FaRegSun /> : <FaRegMoon />}
-            {getLanguageText('languageToggle')}
+          <ToggleButton darkMode={isDarkMode} onClick={toggleMode}>
+            {isDarkMode ? (
+              <>
+                <FaRegSun /> light mode
+              </>
+            ) : (
+              <>
+                <FaRegMoon /> dark mode
+              </>
+            )}
           </ToggleButton>
-          <ToggleButton onClick={toggleLanguage} darkMode={isDarkMode}>
-            <FaLanguage />
-            {getLanguageText('languageToggle')}
+          <ToggleButton darkMode={isDarkMode} onClick={toggleLanguage}>
+            <FaLanguage /> {getLanguageText('languageToggle')}
           </ToggleButton>
-          <HelpButton onClick={toggleHelp} darkMode={isDarkMode}>
-            <FaQuestionCircle />
-            {getLanguageText('help')}
-          </HelpButton>
         </ButtonGroup>
         <ContentWrapper>
           <Title>{getLanguageText('header')}</Title>
           <Paragraph>{getLanguageText('paragraph')}</Paragraph>
-          <NoteList notes={notes} addNote={addNote} language={language} />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <NoteList
+                  notes={notes}
+                  darkMode={isDarkMode}
+                  addNote={addNote}
+                  updateNote={updateNote}
+                  deleteNote={deleteNote}
+                  getLanguageText={getLanguageText}
+                />
+              }
+            />
+            <Route
+              path="/note/:id"
+              element={
+                <NotePage
+                  notes={notes}
+                  darkMode={isDarkMode}
+                  updateNote={updateNote}
+                  getLanguageText={getLanguageText}
+                />
+              }
+            />
+          </Routes>
         </ContentWrapper>
+
+        <HelpButton darkMode={isDarkMode} onClick={toggleHelp}>
+          <FaQuestionCircle /> {getLanguageText('help')}
+        </HelpButton>
+
         {showHelp && (
           <HelpBox darkMode={isDarkMode}>
             <HelpContent>
-              <h4>{getLanguageText('help')}</h4>
               <p>{getLanguageText('helpDescription')}</p>
-              {getLanguageText('helpInstructions').map((instruction, index) => (
-                <HelpRow key={index}>
-                  <span>{index + 1}.</span>
-                  <span>{instruction}</span>
-                </HelpRow>
-              ))}
-              <p>{getLanguageText('helpTheme')}</p>
-              <p>{getLanguageText('helpLanguage')}</p>
+              <ol>
+                {getLanguageText('helpInstructions').map((instruction, index) => (
+                  <li key={index}>{instruction}</li>
+                ))}
+              </ol>
+              <HelpRow>
+                <ToggleButton darkMode={isDarkMode} disabled>
+                  {isDarkMode ? <FaRegSun /> : <FaRegMoon />} {isDarkMode ? 'light mode' : 'dark mode'}
+                </ToggleButton>
+                <span>{getLanguageText('helpTheme')}</span>
+              </HelpRow>
+              <HelpRow>
+                <ToggleButton darkMode={isDarkMode} disabled>
+                  <FaLanguage /> {getLanguageText('languageToggle')}
+                </ToggleButton>
+                <span>{getLanguageText('helpLanguage')}</span>
+              </HelpRow>
+              <p>
+                {getLanguageText('contactCreator')} <NotedzHighlight>notedz</NotedzHighlight>, {getLanguageText('contactLink')}
+              </p>
+              <HelpRow>
+                <FooterButton darkMode={isDarkMode} as="button" disabled>
+                  <BsCloudFill /> notedz
+                </FooterButton>
+              </HelpRow>
             </HelpContent>
           </HelpBox>
         )}
-        <FollowUsButton
-          href="https://twitter.com/leozinnjs"
-          target="_blank"
+        <FollowUsButton 
+          darkMode={isDarkMode} 
+          href="https://bsky.app/profile/notedz.bsky.social" 
+          target="_blank" 
           rel="noopener noreferrer"
-          darkMode={isDarkMode}
         >
-          <FaLanguage />
-          {getLanguageText('backButton')}
+          <BsCloudFill /> {getLanguageText('followUs')}
         </FollowUsButton>
       </Container>
     </Router>
