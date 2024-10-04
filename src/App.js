@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FaRegMoon, FaRegSun, FaLanguage, FaQuestionCircle } from 'react-icons/fa';
 import { BsCloudFill } from "react-icons/bs";
-import NoteList from './Components/NoteList';
 import NotePage from './Components/NotePage';
 
 const GlobalStyle = createGlobalStyle`
@@ -215,6 +214,80 @@ const FollowUsButton = styled(FooterButton)`
   left: 10px;
 `;
 
+// NoteList component (updated with 50 character limit)
+const NoteInput = styled.input`
+  width: 70%;
+  padding: 10px;
+  margin-right: 10px;
+  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  background-color: ${(props) => (props.darkMode ? '#333' : '#f0f0f0')};
+  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  border-radius: 5px;
+  font-family: 'Fira Code', monospace;
+`;
+
+const AddButton = styled.button`
+  padding: 10px 20px;
+  background-color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? '#000' : '#fff')};
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Fira Code', monospace;
+`;
+
+const NoteItem = styled.div`
+  margin: 10px 0;
+  padding: 10px;
+  background-color: ${(props) => (props.darkMode ? '#333' : '#f0f0f0')};
+  border-radius: 5px;
+
+  a {
+    color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+function NoteList({ notes, darkMode, addNote, updateNote, deleteNote, getLanguageText }) {
+  const [newNoteTitle, setNewNoteTitle] = useState('');
+
+  const handleAddNote = () => {
+    if (newNoteTitle.trim()) {
+      addNote(newNoteTitle.trim());
+      setNewNoteTitle('');
+    }
+  };
+
+  const handleInputChange = (e) => {
+    // Limit the input to 50 characters
+    setNewNoteTitle(e.target.value.slice(0, 50));
+  };
+
+  return (
+    <div>
+      <NoteInput
+        type="text"
+        value={newNoteTitle}
+        onChange={handleInputChange}
+        placeholder={getLanguageText('newNotePrompt')}
+        darkMode={darkMode}
+      />
+      <AddButton onClick={handleAddNote} darkMode={darkMode}>
+        +
+      </AddButton>
+      {notes.map((note, index) => (
+        <NoteItem key={index} darkMode={darkMode}>
+          <Link to={`/note/${index}`}>{note.title}</Link>
+        </NoteItem>
+      ))}
+    </div>
+  );
+}
+
 function Logo({ darkMode }) {
   return (
     <LogoWrapper darkMode={darkMode}>
@@ -269,13 +342,13 @@ function App() {
       pt: {
         languageToggle: 'en-us',
         header: 'escreva o que quiser',
-        newNotePrompt: 'dê um título à sua nota...',
+        newNotePrompt: 'dê um título à sua nota (max 50 caracteres)...',
         backButton: 'voltar',
         paragraph: 'crie histórias, anote receitas, ideias mirabolantes ou qualquer coisa que você quiser.',
         help: 'Ajuda',
         helpDescription: 'Aqui você pode criar notas, organizar suas ideias, criar histórias e escrever tudo o que quiser!',
         helpInstructions: [
-          'Use o campo no centro da tela para dar um título à nota que deseja criar;',
+          'Use o campo no centro da tela para dar um título à nota que deseja criar (máximo de 50 caracteres);',
           'Clique no botão + para criar a nota;',
           'A nota será adicionada a uma lista, clique sobre a nota para acessá-la e escrever.',
         ],
@@ -288,13 +361,13 @@ function App() {
       en: {
         languageToggle: 'pt-br',
         header: 'write whatever you want',
-        newNotePrompt: 'give your note a title...',
+        newNotePrompt: 'give your note a title (max 50 characters)...',
         backButton: 'back',
         paragraph: 'create stories, jot down recipes, wild ideas, or anything else you want.',
         help: 'Help',
         helpDescription: 'Here you can create notes, organize your ideas, write stories, and jot down anything you want!',
         helpInstructions: [
-          'Use the field in the center of the screen to give a title to the note you want to create;',
+          'Use the field in the center of the screen to give a title to the note you want to create (maximum 50 characters);',
           'Click the + button to create the note;',
           'The note will be added to a list, click on the note to access and write in it.',
         ],
