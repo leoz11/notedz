@@ -313,14 +313,16 @@ function App() {
   };
 
   const updateNote = (index, newTitle, newContent) => {
-    const title = newTitle.slice(0, 50);
-    const content = newContent.slice(0, 50);
+    if (newTitle.length > 50 || newContent.length > 50) {
+      console.error("Título e conteúdo devem ter no máximo 50 caracteres.");
+      return;
+    }
   
     const newNotes = [...notes];
-    newNotes[index] = { title, content };
+    newNotes[index] = { title: newTitle, content: newContent };
     setNotes(newNotes);
   };
-
+  
   const deleteNote = (index) => {
     const newNotes = notes.filter((_, i) => i !== index);
     setNotes(newNotes);
