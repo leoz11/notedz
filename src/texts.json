@@ -1,0 +1,41 @@
+{
+    "pt": {
+      "languageToggle": "en-us",
+      "header": "escreva o que quiser",
+      "newNotePrompt": "dê um título à sua nota...",
+      "backButton": "voltar",
+      "paragraph": "crie histórias, anote receitas, ideias mirabolantes ou qualquer coisa que você quiser.",
+      "help": "Ajuda",
+      "helpDescription": "Aqui você pode criar notas, organizar suas ideias, criar histórias e escrever tudo o que quiser!",
+      "helpInstructions": [
+        "Use o campo no centro da tela para dar um título à nota que deseja criar;",
+        "Clique no botão + para criar a nota;",
+        "A nota será adicionada a uma lista, clique sobre a nota para acessá-la e escrever."
+      ],
+      "helpTheme": "Use esse botão para alterar o tema do site.",
+      "helpLanguage": "Use esse botão para alterar o idioma do site.",
+      "contactCreator": "Qualquer dúvida que tiver pode ser tirada com o criador do",
+      "contactLink": "entre em contato clicando no botão abaixo.",
+      "madeByLeo": "Feito por Léo"
+    },
+    "en": {
+      "languageToggle": "pt-br",
+      "header": "write whatever you want",
+      "newNotePrompt": "give your note a title...",
+      "backButton": "back",
+      "paragraph": "create stories, jot down recipes, wild ideas, or anything else you want.",
+      "help": "Help",
+      "helpDescription": "Here you can create notes, organize your ideas, write stories, and jot down anything you want!",
+      "helpInstructions": [
+        "Use the field in the center of the screen to give a title to the note you want to create;",
+        "Click the + button to create the note;",
+        "The note will be added to a list, click on the note to access and write in it."
+      ],
+      "helpTheme": "Use this button to change the site's theme.",
+      "helpLanguage": "Use this button to change the site's language.",
+      "contactCreator": "Any questions can be directed to the creator of",
+      "contactLink": "contact him by clicking the button below.",
+      "madeByLeo": "Made by Leo"
+    }
+  }
+  
