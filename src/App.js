@@ -30,7 +30,7 @@ const Container = styled.div`
   min-height: 100vh;
   width: 100%;
   background-color: ${(props) => (props.darkMode ? '#000000' : '#fff')};
-  color: ${(props) => (props.darkMode ? '#blue' : '#000')};
+  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
   transition: background-color 0.3s, color 0.3s;
   padding: 20px;
   box-sizing: border-box;
