@@ -19,6 +19,7 @@ const NoteItem = styled.li`
   border-bottom: 1px solid ${(props) => (props.darkMode ? '#333' : '#ddd')};
   transition: background-color 0.2s, transform 0.2s;
   border-radius: 5px;
+  margin-bottom: 10px;
 
   &:hover {
     background-color: ${(props) => (props.darkMode ? '#555' : '#f5f5f5')};
