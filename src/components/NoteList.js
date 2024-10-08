@@ -16,7 +16,6 @@ const NotesList = styled.ul`
 const NoteItem = styled.li`
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
   border-bottom: 1px solid ${(props) => (props.darkMode ? '#333' : '#ddd')};
   padding-bottom: 10px;
   transition: background-color 0.2s, transform 0.2s;
