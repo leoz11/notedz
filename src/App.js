@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { FaQuestionCircle } from 'react-icons/fa';
-import { FaBluesky } from "react-icons/fa6";
+import { FaXTwitter } from "react-icons/fa6";
 import Header from './components/Header';
 import Home from './pages/Home';
 import HelpBox from './components/HelpBox';
@@ -200,7 +200,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <FaBluesky /> {getLanguageText('madeByLeo')}
+          <FaXTwitter /> {getLanguageText('madeByLeo')}
         </MadeByLeoButton>
       </Container>
     </Router>
