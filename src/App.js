@@ -196,7 +196,7 @@ function App() {
 
         <MadeByLeoButton
           darkMode={isDarkMode}
-          href="https://bsky.app/profile/leozvlr.bsky.social"
+          href="https://x.com/leozinnjs"
           target="_blank"
           rel="noopener noreferrer"
         >
