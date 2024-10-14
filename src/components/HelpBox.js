@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaRegSun, FaRegMoon, FaLanguage } from 'react-icons/fa';
-import { FaBluesky } from "react-icons/fa6";
+import { FaXTwitter } from "react-icons/fa6";
 
 const HelpBoxContainer = styled.div`
   position: absolute;
@@ -125,8 +125,8 @@ const HelpBox = ({ darkMode, isDarkMode, getLanguageText }) => {
           {getLanguageText('contactCreator')} <NotedzHighlight>notedz</NotedzHighlight>, {getLanguageText('contactLink')}
         </p>
         <HelpRow>
-          <FooterButton darkMode={darkMode} href="https://bsky.app/profile/leozvlr.bsky.social" target="_blank" rel="noopener noreferrer">
-            <FaBluesky /> Leo
+          <FooterButton darkMode={darkMode} href="https://x.com/leozinnjs" target="_blank" rel="noopener noreferrer">
+            <FaXTwitter /> Leo
           </FooterButton>
         </HelpRow>
       </HelpContent>
