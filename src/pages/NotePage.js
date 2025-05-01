@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { FaArrowLeft, FaEdit, FaCheck, FaUndo, FaRedo } from 'react-icons/fa';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { FaArrowLeft, FaEdit, FaCheck, FaUndo, FaRedo } from "react-icons/fa";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const HeaderWrapper = styled.div`
   position: sticky;
@@ -17,15 +17,15 @@ const HeaderWrapper = styled.div`
 
 const BackButton = styled.button`
   background: none;
-  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 20px;
   padding: 8px 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   transition: color 0.3s, border-color 0.3s;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 0.9em;
   margin-right: 10px;
 
@@ -46,7 +46,7 @@ const NoteInput = styled.input`
   flex-grow: 1;
   background: none;
   border: none;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   font-size: 1.2em;
   padding: 5px;
   outline: none;
@@ -55,13 +55,12 @@ const NoteInput = styled.input`
 const IconButton = styled.button`
   background: none;
   border: none;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   cursor: pointer;
   font-size: 18px;
   padding: 5px;
   margin-left: 5px;
 `;
-
 
 const EditorWrapper = styled.div`
   width: 100%;
@@ -69,10 +68,10 @@ const EditorWrapper = styled.div`
   height: auto;
   min-height: 400px;
   margin: 20px auto;
-  border: 1px solid ${(props) => (props.darkMode ? '#444' : '#ccc')};
+  border: 1px solid ${(props) => (props.darkMode ? "#444" : "#ccc")};
   border-radius: 4px;
   overflow: hidden;
-  
+
   @media (max-width: 768px) {
     width: 95%;
     margin: 10px auto;
@@ -84,7 +83,7 @@ const StyledReactQuill = styled(ReactQuill)`
 
   .ql-container {
     font-size: 16px;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     height: calc(100% - 42px);
   }
 
@@ -95,8 +94,8 @@ const StyledReactQuill = styled(ReactQuill)`
   }
 
   .ql-toolbar {
-    border-bottom: 1px solid ${(props) => (props.darkMode ? '#444' : '#ccc')};
-    background-color: ${(props) => (props.darkMode ? '#2a2a2a' : '#f8f8f8')};
+    border-bottom: 1px solid ${(props) => (props.darkMode ? "#444" : "#ccc")};
+    background-color: ${(props) => (props.darkMode ? "#2a2a2a" : "#f8f8f8")};
   }
 
   ${(props) =>
@@ -123,7 +122,7 @@ const StyledReactQuill = styled(ReactQuill)`
     .ql-container {
       font-size: 14px;
     }
-    
+
     .ql-editor {
       padding: 10px;
     }
@@ -175,8 +174,8 @@ const NotePage = ({ notes, darkMode, updateNote, getLanguageText }) => {
   return (
     <>
       <HeaderWrapper darkMode={darkMode}>
-        <BackButton darkMode={darkMode} onClick={() => navigate('/')}>
-          <FaArrowLeft /> {getLanguageText('backButton')}
+        <BackButton darkMode={darkMode} onClick={() => navigate("/")}>
+          <FaArrowLeft /> {getLanguageText("backButton")}
         </BackButton>
         {isEditing ? (
           <>
@@ -216,6 +215,6 @@ const NotePage = ({ notes, darkMode, updateNote, getLanguageText }) => {
       </EditorWrapper>
     </>
   );
-};  
+};
 
 export default NotePage;

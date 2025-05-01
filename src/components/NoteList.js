@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { FaTimes, FaEdit, FaCheck } from 'react-icons/fa';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { FaTimes, FaEdit, FaCheck } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
-import ConfirmationModal from './ConfirmationModal';
+import ConfirmationModal from "./ConfirmationModal";
 
 const NotesList = styled.ul`
   list-style-type: none;
@@ -16,22 +16,21 @@ const NotesList = styled.ul`
 const NoteItem = styled.li`
   display: flex;
   align-items: center;
-  border-bottom: 1px solid ${(props) => (props.darkMode ? '#333' : '#ddd')};
+  border-bottom: 1px solid ${(props) => (props.darkMode ? "#333" : "#ddd")};
   transition: background-color 0.2s, transform 0.2s;
   border-radius: 5px;
   margin-bottom: 10px;
 
   &:hover {
-    background-color: ${(props) => (props.darkMode ? '#555' : '#f5f5f5')};
+    background-color: ${(props) => (props.darkMode ? "#555" : "#f5f5f5")};
   }
 `;
 
-
 const NoteTitle = styled(Link)`
   flex-grow: 1;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   text-decoration: none;
-  font-size: 1em;
+  font-size: 1.5em;
   padding: 5px;
   white-space: nowrap;
   overflow: hidden;
@@ -43,9 +42,9 @@ const NoteInput = styled.input`
   flex-grow: 1;
   background: none;
   border: none;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   font-size: 1em;
-  padding: 7px;
+  padding: 10px;
   outline: 2px solid #333;
   border-radius: 5px;
   font-size: 20px;
@@ -54,7 +53,7 @@ const NoteInput = styled.input`
 const IconButton = styled.button`
   background: none;
   border: none;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   cursor: pointer;
   font-size: 18px;
   padding: 5px;
@@ -73,8 +72,15 @@ const NewNoteWrapper = styled.div`
   width: 100%;
 `;
 
-const NoteList = ({ notes, darkMode, addNote, updateNote, deleteNote, getLanguageText }) => {
-  const [newNoteTitle, setNewNoteTitle] = useState('');
+const NoteList = ({
+  notes,
+  darkMode,
+  addNote,
+  updateNote,
+  deleteNote,
+  getLanguageText,
+}) => {
+  const [newNoteTitle, setNewNoteTitle] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [noteToDelete, setNoteToDelete] = useState(null);
@@ -82,7 +88,7 @@ const NoteList = ({ notes, darkMode, addNote, updateNote, deleteNote, getLanguag
   const handleAddNote = () => {
     if (newNoteTitle.trim()) {
       addNote(newNoteTitle);
-      setNewNoteTitle('');
+      setNewNoteTitle("");
     }
   };
 
@@ -115,7 +121,7 @@ const NoteList = ({ notes, darkMode, addNote, updateNote, deleteNote, getLanguag
           type="text"
           value={newNoteTitle}
           onChange={(e) => setNewNoteTitle(e.target.value)}
-          placeholder={getLanguageText('newNotePrompt')}
+          placeholder={getLanguageText("newNotePrompt")}
           darkMode={darkMode}
         />
         <AddNoteButton onClick={handleAddNote} darkMode={darkMode}>
@@ -130,23 +136,38 @@ const NoteList = ({ notes, darkMode, addNote, updateNote, deleteNote, getLanguag
                 <NoteInput
                   type="text"
                   value={note.title}
-                  onChange={(e) => updateNote(index, e.target.value, note.content)}
+                  onChange={(e) =>
+                    updateNote(index, e.target.value, note.content)
+                  }
                   darkMode={darkMode}
                   autoFocus
                 />
-                <IconButton onClick={() => setEditingIndex(null)} darkMode={darkMode}>
+                <IconButton
+                  onClick={() => setEditingIndex(null)}
+                  darkMode={darkMode}
+                >
                   <FaCheck />
                 </IconButton>
               </>
             ) : (
               <>
-                <NoteTitle to={`/note/${index}`} darkMode={darkMode} title={note.title}>
+                <NoteTitle
+                  to={`/note/${index}`}
+                  darkMode={darkMode}
+                  title={note.title}
+                >
                   {truncateTitle(note.title)}
                 </NoteTitle>
-                <IconButton onClick={() => setEditingIndex(index)} darkMode={darkMode}>
+                <IconButton
+                  onClick={() => setEditingIndex(index)}
+                  darkMode={darkMode}
+                >
                   <FaEdit />
                 </IconButton>
-                <IconButton onClick={() => handleDeleteNote(index)} darkMode={darkMode}>
+                <IconButton
+                  onClick={() => handleDeleteNote(index)}
+                  darkMode={darkMode}
+                >
                   <FaTimes />
                 </IconButton>
               </>

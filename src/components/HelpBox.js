@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { FaRegSun, FaRegMoon, FaLanguage } from 'react-icons/fa';
+import React from "react";
+import styled from "styled-components";
+import { FaRegSun, FaRegMoon, FaLanguage } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 const HelpBoxContainer = styled.div`
@@ -8,9 +8,9 @@ const HelpBoxContainer = styled.div`
   bottom: 60px;
   right: 10px;
   width: 300px;
-  background-color: ${(props) => (props.darkMode ? '#333' : '#f0f0f0')};
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
-  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  background-color: ${(props) => (props.darkMode ? "#333" : "#f0f0f0")};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
+  border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 10px;
   padding: 20px;
   font-size: 0.9em;
@@ -46,21 +46,21 @@ const HelpRow = styled.div`
 const NotedzHighlight = styled.span`
   text-decoration: underline;
   text-decoration-thickness: 2.5px;
-  text-decoration-color: #7F00FF;
+  text-decoration-color: #7f00ff;
   color: inherit;
 `;
 
 const ToggleButton = styled.button`
   background: none;
-  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 20px;
   padding: 8px 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   transition: color 0.3s, border-color 0.3s;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 0.9em;
   margin: 5px;
 
@@ -72,15 +72,15 @@ const ToggleButton = styled.button`
 
 const FooterButton = styled.a`
   background: none;
-  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 20px;
-  padding: 8px 16px;
+  padding: 12px 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   transition: color 0.3s, border-color 0.3s;
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
   font-size: 0.9em;
   text-decoration: none;
 
@@ -103,29 +103,37 @@ const HelpBox = ({ darkMode, isDarkMode, getLanguageText }) => {
   return (
     <HelpBoxContainer darkMode={darkMode}>
       <HelpContent>
-        <p>{getLanguageText('helpDescription')}</p>
+        <p>{getLanguageText("helpDescription")}</p>
         <ol>
-          {getLanguageText('helpInstructions').map((instruction, index) => (
+          {getLanguageText("helpInstructions").map((instruction, index) => (
             <li key={index}>{instruction}</li>
           ))}
         </ol>
         <HelpRow>
           <ToggleButton darkMode={darkMode} disabled>
-            {isDarkMode ? <FaRegSun /> : <FaRegMoon />} {isDarkMode ? 'light mode' : 'dark mode'}
+            {isDarkMode ? <FaRegSun /> : <FaRegMoon />}{" "}
+            {isDarkMode ? "light mode" : "dark mode"}
           </ToggleButton>
-          <span>{getLanguageText('helpTheme')}</span>
+          <span>{getLanguageText("helpTheme")}</span>
         </HelpRow>
         <HelpRow>
           <ToggleButton darkMode={darkMode} disabled>
-            <FaLanguage /> {getLanguageText('languageToggle')}
+            <FaLanguage /> {getLanguageText("languageToggle")}
           </ToggleButton>
-          <span>{getLanguageText('helpLanguage')}</span>
+          <span>{getLanguageText("helpLanguage")}</span>
         </HelpRow>
         <p>
-          {getLanguageText('contactCreator')} <NotedzHighlight>notedz</NotedzHighlight>, {getLanguageText('contactLink')}
+          {getLanguageText("contactCreator")}{" "}
+          <NotedzHighlight>notedz</NotedzHighlight>,{" "}
+          {getLanguageText("contactLink")}
         </p>
         <HelpRow>
-          <FooterButton darkMode={darkMode} href="https://x.com/leozinnjs" target="_blank" rel="noopener noreferrer">
+          <FooterButton
+            darkMode={darkMode}
+            href="https://x.com/leozinnjs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaXTwitter /> Leo
           </FooterButton>
         </HelpRow>

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import styled, { createGlobalStyle } from 'styled-components';
-import { FaQuestionCircle } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import styled, { createGlobalStyle } from "styled-components";
+import { FaQuestionCircle } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import Header from './components/Header';
-import Home from './pages/Home';
-import HelpBox from './components/HelpBox';
-import texts from './texts.json';
+import Header from "./components/Header";
+import Home from "./pages/Home";
+import HelpBox from "./components/HelpBox";
+import texts from "./texts.json";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -29,8 +29,8 @@ const Container = styled.div`
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  background-color: ${(props) => (props.darkMode ? '#000000' : '#fff')};
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  background-color: ${(props) => (props.darkMode ? "#000000" : "#fff")};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   transition: background-color 0.3s, color 0.3s;
   padding: 20px;
   box-sizing: border-box;
@@ -41,16 +41,16 @@ const Container = styled.div`
 
 const HelpButton = styled.button`
   background: none;
-  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 20px;
-  padding: 8px 16px;
+  padding: 12px 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   transition: color 0.3s, border-color 0.3s;
-  font-family: 'Roboto', sans-serif;
-  font-size: 0.9em;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.2em;
   position: absolute;
   bottom: 10px;
   right: 10px;
@@ -59,20 +59,36 @@ const HelpButton = styled.button`
     margin-right: 8px;
     font-size: 1.3em;
   }
+
+  span {
+    display: inline;
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px;
+
+    span {
+      display: none;
+    }
+
+    svg {
+      margin-right: 0;
+    }
+  }
 `;
 
 const FooterButton = styled.a`
   background: none;
-  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 20px;
-  padding: 8px 16px;
+  padding: 12px 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
   transition: color 0.3s, border-color 0.3s;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.9em;
+  font-family: "Fira Code", monospace;
+  font-size: 1.2em;
   text-decoration: none;
 
   svg {
@@ -80,12 +96,19 @@ const FooterButton = styled.a`
     font-size: 1.3em;
   }
 
+  span {
+    display: inline;
+  }
+
   @media (max-width: 768px) {
-    font-size: 0.8em;
-    padding: 6px 12px;
+    padding: 12px;
+
+    span {
+      display: none;
+    }
 
     svg {
-      font-size: 1.2em;
+      margin-right: 0;
     }
   }
 `;
@@ -98,29 +121,29 @@ const MadeByLeoButton = styled(FooterButton)`
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedMode = localStorage.getItem('darkMode');
+    const savedMode = localStorage.getItem("darkMode");
     return savedMode ? JSON.parse(savedMode) : false;
   });
   const [language, setLanguage] = useState(() => {
-    const savedLanguage = localStorage.getItem('language');
-    return savedLanguage || 'pt';
+    const savedLanguage = localStorage.getItem("language");
+    return savedLanguage || "pt";
   });
   const [notes, setNotes] = useState(() => {
-    const savedNotes = localStorage.getItem('notes');
+    const savedNotes = localStorage.getItem("notes");
     return savedNotes ? JSON.parse(savedNotes) : [];
   });
   const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
   }, [isDarkMode]);
 
   useEffect(() => {
-    localStorage.setItem('language', language);
+    localStorage.setItem("language", language);
   }, [language]);
 
   useEffect(() => {
-    localStorage.setItem('notes', JSON.stringify(notes));
+    localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
   const toggleMode = () => {
@@ -128,7 +151,7 @@ function App() {
   };
 
   const toggleLanguage = () => {
-    setLanguage(language === 'pt' ? 'en' : 'pt');
+    setLanguage(language === "pt" ? "en" : "pt");
   };
 
   const toggleHelp = () => {
@@ -141,7 +164,7 @@ function App() {
 
   const addNote = (title) => {
     if (title.length <= 50) {
-      setNotes([...notes, { title, content: '' }]);
+      setNotes([...notes, { title, content: "" }]);
     } else {
       alert("O título da nota não pode ter mais de 50 caracteres.");
     }
@@ -172,35 +195,35 @@ function App() {
           toggleLanguage={toggleLanguage}
           getLanguageText={getLanguageText}
         />
-        
-        <Home 
-          notes={notes} 
-          darkMode={isDarkMode} 
-          addNote={addNote} 
-          updateNote={updateNote} 
-          deleteNote={deleteNote} 
-          getLanguageText={getLanguageText} 
+
+        <Home
+          notes={notes}
+          darkMode={isDarkMode}
+          addNote={addNote}
+          updateNote={updateNote}
+          deleteNote={deleteNote}
+          getLanguageText={getLanguageText}
         />
 
         <HelpButton darkMode={isDarkMode} onClick={toggleHelp}>
-          <FaQuestionCircle /> {getLanguageText('help')}
+          <FaQuestionCircle /> <span>{getLanguageText("help")}</span>
         </HelpButton>
 
         {showHelp && (
-          <HelpBox 
-            darkMode={isDarkMode} 
-            isDarkMode={isDarkMode} 
-            getLanguageText={getLanguageText} 
+          <HelpBox
+            darkMode={isDarkMode}
+            isDarkMode={isDarkMode}
+            getLanguageText={getLanguageText}
           />
         )}
 
         <MadeByLeoButton
           darkMode={isDarkMode}
-          href="https://x.com/leozinnjs"
+          href="https://x.com/leleojs_"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <FaXTwitter /> {getLanguageText('madeByLeo')}
+          <FaXTwitter /> <span>{getLanguageText("madeByLeo")}</span>
         </MadeByLeoButton>
       </Container>
     </Router>

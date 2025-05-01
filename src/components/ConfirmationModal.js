@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { FaCheck, FaTimes } from 'react-icons/fa';
+import React from "react";
+import styled from "styled-components";
+import { FaCheck, FaTimes } from "react-icons/fa";
 
 const Overlay = styled.div`
   position: fixed;
@@ -16,16 +16,16 @@ const Overlay = styled.div`
 `;
 
 const ModalContainer = styled.div`
-  background: ${(props) => (props.darkMode ? '#333' : '#fff')};
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
-  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  background: ${(props) => (props.darkMode ? "#333" : "#fff")};
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
+  border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 10px;
   padding: 20px;
   max-width: 400px;
   width: 100%;
   text-align: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  font-family: 'Fira Code', monospace;
+  font-family: "Fira Code", monospace;
 `;
 
 const ButtonGroup = styled.div`
@@ -37,12 +37,12 @@ const ButtonGroup = styled.div`
 
 const ModalButton = styled.button`
   background: none;
-  border: 2px solid ${(props) => (props.darkMode ? '#fff' : '#000')};
+  border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 20px;
   padding: 8px 16px;
   cursor: pointer;
-  color: ${(props) => (props.darkMode ? '#fff' : '#000')};
-  font-family: 'Fira Code', monospace;
+  color: ${(props) => (props.darkMode ? "#fff" : "#000")};
+  font-family: "Fira Code", monospace;
   font-size: 0.9em;
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@ const ModalButton = styled.button`
   }
 
   &:hover {
-    background-color: ${(props) => (props.darkMode ? '#444' : '#eee')};
+    background-color: ${(props) => (props.darkMode ? "#444" : "#eee")};
   }
 `;
 

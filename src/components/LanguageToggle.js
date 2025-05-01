@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const ToggleButton = styled.button`
   background: none;
@@ -12,8 +12,8 @@ const ToggleButton = styled.button`
 const LanguageToggle = ({ onLanguageChange }) => {
   return (
     <div>
-      <ToggleButton onClick={() => onLanguageChange('pt')}>PT</ToggleButton>
-      <ToggleButton onClick={() => onLanguageChange('en')}>EN</ToggleButton>
+      <ToggleButton onClick={() => onLanguageChange("pt")}>PT</ToggleButton>
+      <ToggleButton onClick={() => onLanguageChange("en")}>EN</ToggleButton>
     </div>
   );
 };

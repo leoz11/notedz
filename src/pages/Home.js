@@ -1,16 +1,16 @@
-import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import NoteList from '../components/NoteList';
-import NotePage from './NotePage';
-import styled from 'styled-components';
+import React from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import NoteList from "../components/NoteList";
+import NotePage from "./NotePage";
+import styled from "styled-components";
 
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 600px;
+  max-width: 700px;
   width: 100%;
-  margin-top: 100px;
+  margin-top: 15vh;
   padding-bottom: 20px;
 
   @media (max-width: 768px) {
@@ -20,7 +20,7 @@ const ContentWrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 2em;
+  font-size: 3em;
   margin: 0 0 20px 0;
   text-align: center;
 
@@ -30,7 +30,7 @@ const Title = styled.h1`
 `;
 
 const Paragraph = styled.p`
-  font-size: 1em;
+  font-size: 1.5em;
   text-align: center;
   margin: 0 0 50px 0;
 
@@ -40,15 +40,22 @@ const Paragraph = styled.p`
   }
 `;
 
-const Home = ({ notes, darkMode, addNote, updateNote, deleteNote, getLanguageText }) => {
+const Home = ({
+  notes,
+  darkMode,
+  addNote,
+  updateNote,
+  deleteNote,
+  getLanguageText,
+}) => {
   const location = useLocation();
 
   return (
     <ContentWrapper>
-      { !location.pathname.startsWith('/note/') && (
+      {!location.pathname.startsWith("/note/") && (
         <>
-          <Title>{getLanguageText('header')}</Title>
-          <Paragraph>{getLanguageText('paragraph')}</Paragraph>
+          <Title>{getLanguageText("header")}</Title>
+          <Paragraph>{getLanguageText("paragraph")}</Paragraph>
         </>
       )}
       <Routes>
