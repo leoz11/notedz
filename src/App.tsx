@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { FaQuestionCircle } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { AuthProvider } from "./contexts/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 import Header from "./components/Header";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import ForgotPassword from "./pages/ForgotPassword";
 import HelpBox from "./components/HelpBox";
 import texts from "./texts.json";
 
@@ -22,7 +27,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const Container = styled.div`
+interface ContainerProps {
+  darkMode: boolean;
+}
+
+const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -39,7 +48,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const HelpButton = styled.button`
+const HelpButton = styled.button<ContainerProps>`
   background: none;
   border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 20px;
@@ -77,7 +86,7 @@ const HelpButton = styled.button`
   }
 `;
 
-const FooterButton = styled.a`
+const FooterButton = styled.a<ContainerProps>`
   background: none;
   border: 2px solid ${(props) => (props.darkMode ? "#fff" : "#000")};
   border-radius: 20px;
@@ -119,20 +128,28 @@ const MadeByLeoButton = styled(FooterButton)`
   left: 10px;
 `;
 
+interface Note {
+  title: string;
+  content: string;
+}
+
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const savedMode = localStorage.getItem("darkMode");
     return savedMode ? JSON.parse(savedMode) : false;
   });
-  const [language, setLanguage] = useState(() => {
+
+  const [language, setLanguage] = useState<string>(() => {
     const savedLanguage = localStorage.getItem("language");
     return savedLanguage || "pt";
   });
-  const [notes, setNotes] = useState(() => {
+
+  const [notes, setNotes] = useState<Note[]>(() => {
     const savedNotes = localStorage.getItem("notes");
     return savedNotes ? JSON.parse(savedNotes) : [];
   });
-  const [showHelp, setShowHelp] = useState(false);
+
+  const [showHelp, setShowHelp] = useState<boolean>(false);
 
   useEffect(() => {
     localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
@@ -158,11 +175,11 @@ function App() {
     setShowHelp(!showHelp);
   };
 
-  const getLanguageText = (key) => {
-    return texts[language][key];
+  const getLanguageText = (key: string): string => {
+    return (texts as any)[language][key];
   };
 
-  const addNote = (title) => {
+  const addNote = (title: string) => {
     if (title.length <= 50) {
       setNotes([...notes, { title, content: "" }]);
     } else {
@@ -170,7 +187,7 @@ function App() {
     }
   };
 
-  const updateNote = (index, newTitle, newContent) => {
+  const updateNote = (index: number, newTitle: string, newContent: string) => {
     if (newTitle.length <= 50) {
       const newNotes = [...notes];
       newNotes[index] = { title: newTitle, content: newContent };
@@ -180,53 +197,71 @@ function App() {
     }
   };
 
-  const deleteNote = (index) => {
+  const deleteNote = (index: number) => {
     const newNotes = notes.filter((_, i) => i !== index);
     setNotes(newNotes);
   };
 
   return (
-    <Router>
-      <GlobalStyle />
-      <Container darkMode={isDarkMode}>
-        <Header
-          darkMode={isDarkMode}
-          toggleMode={toggleMode}
-          toggleLanguage={toggleLanguage}
-          getLanguageText={getLanguageText}
-        />
-
-        <Home
-          notes={notes}
-          darkMode={isDarkMode}
-          addNote={addNote}
-          updateNote={updateNote}
-          deleteNote={deleteNote}
-          getLanguageText={getLanguageText}
-        />
-
-        <HelpButton darkMode={isDarkMode} onClick={toggleHelp}>
-          <FaQuestionCircle /> <span>{getLanguageText("help")}</span>
-        </HelpButton>
-
-        {showHelp && (
-          <HelpBox
-            darkMode={isDarkMode}
-            isDarkMode={isDarkMode}
-            getLanguageText={getLanguageText}
+    <AuthProvider>
+      <Router>
+        <GlobalStyle />
+        <Routes>
+          <Route path="/login" element={<Login darkMode={isDarkMode} />} />
+          <Route path="/signup" element={<SignUp darkMode={isDarkMode} />} />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword darkMode={isDarkMode} />}
           />
-        )}
 
-        <MadeByLeoButton
-          darkMode={isDarkMode}
-          href="https://x.com/leleojs_"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <FaXTwitter /> <span>{getLanguageText("madeByLeo")}</span>
-        </MadeByLeoButton>
-      </Container>
-    </Router>
+          <Route
+            path="/*"
+            element={
+              <PrivateRoute>
+                <Container darkMode={isDarkMode}>
+                  <Header
+                    darkMode={isDarkMode}
+                    toggleMode={toggleMode}
+                    toggleLanguage={toggleLanguage}
+                    getLanguageText={getLanguageText}
+                  />
+
+                  <Home
+                    notes={notes}
+                    darkMode={isDarkMode}
+                    addNote={addNote}
+                    updateNote={updateNote}
+                    deleteNote={deleteNote}
+                    getLanguageText={getLanguageText}
+                  />
+
+                  <HelpButton darkMode={isDarkMode} onClick={toggleHelp}>
+                    <FaQuestionCircle /> <span>{getLanguageText("help")}</span>
+                  </HelpButton>
+
+                  {showHelp && (
+                    <HelpBox
+                      darkMode={isDarkMode}
+                      isDarkMode={isDarkMode}
+                      getLanguageText={getLanguageText}
+                    />
+                  )}
+
+                  <MadeByLeoButton
+                    darkMode={isDarkMode}
+                    href="https://x.com/leleojs_"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaXTwitter /> <span>{getLanguageText("madeByLeo")}</span>
+                  </MadeByLeoButton>
+                </Container>
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
